@@ -1,0 +1,205 @@
+{
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "$id": "urn:interfaces:acc_handshake",
+    "type": "object",
+    "description": "xilinx.com, acc_handshake interface definition",
+    "allOf": [
+        {
+            "properties": {
+                "type": {
+                    "description": "The interface type",
+                    "type": "string",
+                    "const": "acc_handshake"
+                },
+                "multiconnect": {
+                    "description": "Behavior if multiple interfaces connected",
+                    "type": "string",
+                    "default": "false"
+                },
+                "ports": {
+                    "type": "object",
+                    "description": "Contains ports and their definitions",
+                    "properties": {
+                        "ap_start": {
+                            "type": "object",
+                            "properties": {
+                                "width": {
+                                    "const": 1
+                                }
+                            }
+                        },
+                        "ap_ready": {
+                            "type": "object",
+                            "properties": {
+                                "width": {
+                                    "const": 1
+                                }
+                            }
+                        },
+                        "ap_done": {
+                            "type": "object",
+                            "properties": {
+                                "width": {
+                                    "const": 1
+                                }
+                            }
+                        },
+                        "ap_continue": {
+                            "type": "object",
+                            "properties": {
+                                "width": {
+                                    "const": 1
+                                }
+                            }
+                        },
+                        "ap_idle": {
+                            "type": "object",
+                            "properties": {
+                                "width": {
+                                    "const": 1
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        {
+            "if": {
+                "properties": {
+                    "side": {
+                        "enum": [
+                            "sink",
+                            "end"
+                        ]
+                    }
+                }
+            },
+            "then": {
+                "properties": {
+                    "ports": {
+                        "type": "object",
+                        "description": "Contains ports and their definitions",
+                        "properties": {
+                            "ap_start": {
+                                "type": "object",
+                                "properties": {
+                                    "dir": {
+                                        "const": "input",
+                                        "default": "input"
+                                    },
+                                    "unconnected": {
+                                        "default": "tie_low"
+                                    }
+                                }
+                            },
+                            "ap_ready": {
+                                "type": "object",
+                                "properties": {
+                                    "dir": {
+                                        "const": "output",
+                                        "default": "output"
+                                    }
+                                }
+                            },
+                            "ap_done": {
+                                "type": "object",
+                                "properties": {
+                                    "dir": {
+                                        "const": "output",
+                                        "default": "output"
+                                    }
+                                }
+                            },
+                            "ap_continue": {
+                                "type": "object",
+                                "properties": {
+                                    "dir": {
+                                        "const": "input",
+                                        "default": "input"
+                                    },
+                                    "unconnected": {
+                                        "default": 1
+                                    }
+                                }
+                            },
+                            "ap_idle": {
+                                "type": "object",
+                                "properties": {
+                                    "dir": {
+                                        "const": "output",
+                                        "default": "output"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "else": {
+                "properties": {
+                    "ports": {
+                        "type": "object",
+                        "description": "Contains ports and their definitions",
+                        "properties": {
+                            "ap_start": {
+                                "type": "object",
+                                "properties": {
+                                    "dir": {
+                                        "const": "output",
+                                        "default": "output"
+                                    }
+                                }
+                            },
+                            "ap_ready": {
+                                "type": "object",
+                                "properties": {
+                                    "dir": {
+                                        "const": "input",
+                                        "default": "input"
+                                    },
+                                    "unconnected": {
+                                        "default": 1
+                                    }
+                                }
+                            },
+                            "ap_done": {
+                                "type": "object",
+                                "properties": {
+                                    "dir": {
+                                        "const": "input",
+                                        "default": "input"
+                                    },
+                                    "unconnected": {
+                                        "default": "tie_low"
+                                    }
+                                }
+                            },
+                            "ap_continue": {
+                                "type": "object",
+                                "properties": {
+                                    "dir": {
+                                        "const": "output",
+                                        "default": "output"
+                                    }
+                                }
+                            },
+                            "ap_idle": {
+                                "type": "object",
+                                "properties": {
+                                    "dir": {
+                                        "const": "input",
+                                        "default": "input"
+                                    },
+                                    "unconnected": {
+                                        "default": "tie_low"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    ]
+}

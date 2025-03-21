@@ -1,0 +1,115 @@
+{
+    "name": "avalon_pipline_hbm",
+    "ip_name": "full_pipeline",
+    "parameters": {
+        "CYCLES":null
+    },
+    "interfaces": [
+        {
+            "interface_name":"clock",
+            "side":"sink",
+            "type":"clock",
+            "ports":{
+                "clk":{
+                    "name":"clk",
+                    "unconnected":"forbidden"
+                }
+            }
+        },
+        {
+            "interface_name":"reset",
+            "side":"sink",
+            "type":"reset",
+            "ports":{
+                "clk":{
+                    "name":"reset",
+                    "unconnected":"forbidden"
+                }
+            }
+        },
+        {
+            "interface_name": "pipe_in",
+            "side": "sink",
+            "type": "avalon",
+            "ports": {
+                "waitrequest": {
+                    "name": "s0_waitrequest"
+                },
+                "writedata": {
+                    "name": "s0_writedata",
+                    "width": 256
+                },
+                "address": {
+                    "name": "s0_address",
+                    "width": 29
+                },
+                "burstcount": {
+                    "name": "s0_burstcount",
+                    "width" :1
+                },
+                "readdata": {
+                    "name": "s0_readdata",
+                    "width": 256
+                },
+                "readdatavalid": {
+                    "name": "s0_readdatavalid",
+                    "width": 1
+                },
+                "write": {
+                    "name": "s0_write"
+                },
+                "read": {
+                    "name": "s0_read"
+                },
+                "byteenable": {
+                    "name": "s0_byteenable",
+                    "width" : 32
+                }
+
+            }
+        },
+        {
+            "interface_name": "pipe_out",
+            "side": "source",
+            "type": "avalon",
+            "interconnect_settings": {
+                "pass_clock": "clock"
+            },
+            "ports": {
+                "waitrequest": {
+                    "name": "m0_waitrequest"
+                },
+                "writedata": {
+                    "name": "m0_writedata",
+                    "width": 256
+                },
+                "address": {
+                    "name": "m0_address",
+                    "width": 29
+                },
+                "burstcount": {
+                    "name": "m0_burstcount",
+                    "width" :1
+                },
+                "readdata": {
+                    "name": "m0_readdata",
+                    "width": 256
+                },
+                "readdatavalid": {
+                    "name": "m0_readdatavalid",
+                    "width": 1
+                },
+                "write": {
+                    "name": "m0_write"
+                },
+                "read": {
+                    "name": "m0_read"
+                },
+                "byteenable": {
+                    "name": "m0_byteenable",
+                    "width" : 32
+                }
+            }
+        }
+    ]
+}

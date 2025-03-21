@@ -1,0 +1,68 @@
+{
+    "name": "top_level",
+    "ip_name": "top",
+    "interfaces": [
+        {
+            "interface_name": "ap_clk",
+            "type": "clock",
+            "side": "source",
+            "interconnect_settings": {},
+            "ports": {
+                "clk": {
+                    "name": "ap_clk"
+                }
+            }
+        },
+        {
+            "interface_name": "ap_rst",
+            "type": "reset",
+            "side": "source",
+            "interconnect_settings": {},
+            "ports": {
+                "rst": {
+                    "name": "ap_rst"
+                }
+            }
+        },
+        {
+            "interface_name": "ap_ctrl0",
+            "type": "acc_handshake",
+            "side": "source",
+            "interconnect_settings": {},
+            "ports": {
+                "start": {
+                    "name": "ap_start0"
+                },
+                "done": {
+                    "name": "ap_done0"
+                },
+                "idle": {
+                    "name": "ap_idle0"
+                },
+                "ready": {
+                    "name": "ap_ready0"
+                }
+            }
+        },
+        {
+            "interface_name": "ap_ctrl1",
+            "type": "acc_handshake",
+            "side": "source",
+            "interconnect_settings": {},
+            "ports": {
+                "start": {
+                    "name": "ap_start1"
+                },
+                "done": {
+                    "name": "ap_done1"
+                },
+                "idle": {
+                    "name": "ap_idle1"
+                },
+                "ready": {
+                    "name": "ap_ready1"
+                }
+            }
+        }
+    ]
+}

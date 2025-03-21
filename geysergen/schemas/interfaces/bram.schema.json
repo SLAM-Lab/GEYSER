@@ -1,0 +1,216 @@
+{
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "$id": "urn:interfaces:bram",
+    "type": "object",
+    "description": "xilinx.com, bram interface definition",
+    "allOf": [
+        {
+            "properties": {
+                "type": {
+                    "description": "The interface type",
+                    "type": "string",
+                    "const": "bram"
+                },
+                "multiconnect": {
+                    "description": "Behavior if multiple interfaces connected",
+                    "type": "string",
+                    "default": "false"
+                },
+                "ports": {
+                    "type": "object",
+                    "description": "Contains ports and their definitions",
+                    "properties": {
+                        "en": {
+                            "type": "object",
+                            "properties": {
+                                "width": {
+                                    "const": 1
+                                }
+                            }
+                        },
+                        "clk": {
+                            "type": "object",
+                            "properties": {
+                                "width": {
+                                    "const": 1
+                                }
+                            }
+                        },
+                        "rst": {
+                            "type": "object",
+                            "properties": {
+                                "width": {
+                                    "const": 1
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        {
+            "if": {
+                "properties": {
+                    "side": {
+                        "enum": [
+                            "sink",
+                            "end"
+                        ]
+                    }
+                }
+            },
+            "then": {
+                "properties": {
+                    "ports": {
+                        "type": "object",
+                        "description": "Contains ports and their definitions",
+                        "properties": {
+                            "en": {
+                                "type": "object",
+                                "properties": {
+                                    "dir": {
+                                        "const": "input",
+                                        "default": "input"
+                                    }
+                                }
+                            },
+                            "dout": {
+                                "type": "object",
+                                "properties": {
+                                    "dir": {
+                                        "const": "output",
+                                        "default": "output"
+                                    }
+                                }
+                            },
+                            "din": {
+                                "type": "object",
+                                "properties": {
+                                    "dir": {
+                                        "const": "input",
+                                        "default": "input"
+                                    },
+                                    "unconnected": {
+                                        "default": 8
+                                    }
+                                }
+                            },
+                            "we": {
+                                "type": "object",
+                                "properties": {
+                                    "dir": {
+                                        "const": "input",
+                                        "default": "input"
+                                    }
+                                }
+                            },
+                            "addr": {
+                                "type": "object",
+                                "properties": {
+                                    "dir": {
+                                        "const": "input",
+                                        "default": "input"
+                                    }
+                                }
+                            },
+                            "clk": {
+                                "type": "object",
+                                "properties": {
+                                    "dir": {
+                                        "const": "input",
+                                        "default": "input"
+                                    }
+                                }
+                            },
+                            "rst": {
+                                "type": "object",
+                                "properties": {
+                                    "dir": {
+                                        "const": "input",
+                                        "default": "input"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "else": {
+                "properties": {
+                    "ports": {
+                        "type": "object",
+                        "description": "Contains ports and their definitions",
+                        "properties": {
+                            "en": {
+                                "type": "object",
+                                "properties": {
+                                    "dir": {
+                                        "const": "output",
+                                        "default": "output"
+                                    }
+                                }
+                            },
+                            "dout": {
+                                "type": "object",
+                                "properties": {
+                                    "dir": {
+                                        "const": "input",
+                                        "default": "input"
+                                    },
+                                    "unconnected": {
+                                        "default": 8
+                                    }
+                                }
+                            },
+                            "din": {
+                                "type": "object",
+                                "properties": {
+                                    "dir": {
+                                        "const": "output",
+                                        "default": "output"
+                                    }
+                                }
+                            },
+                            "we": {
+                                "type": "object",
+                                "properties": {
+                                    "dir": {
+                                        "const": "output",
+                                        "default": "output"
+                                    }
+                                }
+                            },
+                            "addr": {
+                                "type": "object",
+                                "properties": {
+                                    "dir": {
+                                        "const": "output",
+                                        "default": "output"
+                                    }
+                                }
+                            },
+                            "clk": {
+                                "type": "object",
+                                "properties": {
+                                    "dir": {
+                                        "const": "output",
+                                        "default": "output"
+                                    }
+                                }
+                            },
+                            "rst": {
+                                "type": "object",
+                                "properties": {
+                                    "dir": {
+                                        "const": "output",
+                                        "default": "output"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    ]
+}

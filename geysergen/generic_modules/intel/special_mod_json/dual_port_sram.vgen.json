@@ -1,0 +1,69 @@
+{
+    "name": "dual_port_sram",
+    "ip_name": "dual_port_sram",
+    "parameters":{
+        "MEM_BYTES":null,
+        "D_WIDTH":null,
+        "WORD_ADD":1
+    },
+    "hidden_parameters":{
+       "A_WIDTH":"/int(math.ceil(math.log2(MEM_BYTES))-(0 if WORD_ADD!=1 else math.log2(D_WIDTH/8)))" 
+    },
+    "interfaces": [
+        {
+            "interface_name":"clock",
+            "side":"sink",
+            "type":"clock",
+            "ports":{
+                "clk":{
+                    "name":"clk",
+                    "unconnected":"forbidden"
+                }
+            }
+        },
+        {
+            "interface_name":"reset",
+            "side":"sink",
+            "type":"reset",
+            "ports":{
+                "reset":{
+                    "name":"reset",
+                    "unconnected":"forbidden"
+                },
+                "reset_req":{
+                    "name":"reset_req"
+                }
+            }
+        },
+        {
+            "interface_name": "ava_memory?",
+            "multi":["_0","_1"],
+            "side": "sink",
+            "type": "avalon",
+            "ports": {
+                "writedata": {
+                    "name": "writedata?",
+                    "dynamic_width": "D_WIDTH"
+                },
+                "readdata": {
+                    "name": "readdata?",
+                    "dynamic_width": "D_WIDTH"
+                },
+                "address": {
+                    "name": "address?",
+                    "dynamic_width": "A_WIDTH"
+                },
+                "write": {
+                    "name": "write?"
+                },
+                "byteenable": {
+                    "name": "byteenable?",
+                    "dynamic_width": "/int(self._parameters['D_WIDTH']/8)"
+                },
+                "read":{
+                    "name":"read?"
+                }
+            }
+        }
+    ]
+}

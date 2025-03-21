@@ -1,0 +1,1207 @@
+{
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "$id": "urn:interfaces:aximm",
+    "type": "object",
+    "description": "xilinx.com, aximm interface definition",
+    "allOf": [
+        {
+            "properties": {
+                "type": {
+                    "description": "The interface type",
+                    "type": "string",
+                    "const": "aximm"
+                },
+                "multiconnect": {
+                    "description": "Behavior if multiple interfaces connected",
+                    "type": "string",
+                    "default": "false"
+                },
+                "ports": {
+                    "type": "object",
+                    "description": "Contains ports and their definitions",
+                    "properties": {
+                        "awsize": {
+                            "type": "object",
+                            "properties": {
+                                "width": {
+                                    "const": 3
+                                }
+                            }
+                        },
+                        "awburst": {
+                            "type": "object",
+                            "properties": {
+                                "width": {
+                                    "const": 2
+                                }
+                            }
+                        },
+                        "awcache": {
+                            "type": "object",
+                            "properties": {
+                                "width": {
+                                    "const": 4
+                                }
+                            }
+                        },
+                        "awprot": {
+                            "type": "object",
+                            "properties": {
+                                "width": {
+                                    "const": 3
+                                }
+                            }
+                        },
+                        "awregion": {
+                            "type": "object",
+                            "properties": {
+                                "width": {
+                                    "const": 4
+                                }
+                            }
+                        },
+                        "awqos": {
+                            "type": "object",
+                            "properties": {
+                                "width": {
+                                    "const": 4
+                                }
+                            }
+                        },
+                        "awvalid": {
+                            "type": "object",
+                            "properties": {
+                                "width": {
+                                    "const": 1
+                                }
+                            }
+                        },
+                        "awready": {
+                            "type": "object",
+                            "properties": {
+                                "width": {
+                                    "const": 1
+                                }
+                            }
+                        },
+                        "wlast": {
+                            "type": "object",
+                            "properties": {
+                                "width": {
+                                    "const": 1
+                                }
+                            }
+                        },
+                        "wvalid": {
+                            "type": "object",
+                            "properties": {
+                                "width": {
+                                    "const": 1
+                                }
+                            }
+                        },
+                        "wready": {
+                            "type": "object",
+                            "properties": {
+                                "width": {
+                                    "const": 1
+                                }
+                            }
+                        },
+                        "bresp": {
+                            "type": "object",
+                            "properties": {
+                                "width": {
+                                    "const": 2
+                                }
+                            }
+                        },
+                        "bvalid": {
+                            "type": "object",
+                            "properties": {
+                                "width": {
+                                    "const": 1
+                                }
+                            }
+                        },
+                        "bready": {
+                            "type": "object",
+                            "properties": {
+                                "width": {
+                                    "const": 1
+                                }
+                            }
+                        },
+                        "arsize": {
+                            "type": "object",
+                            "properties": {
+                                "width": {
+                                    "const": 3
+                                }
+                            }
+                        },
+                        "arburst": {
+                            "type": "object",
+                            "properties": {
+                                "width": {
+                                    "const": 2
+                                }
+                            }
+                        },
+                        "arcache": {
+                            "type": "object",
+                            "properties": {
+                                "width": {
+                                    "const": 4
+                                }
+                            }
+                        },
+                        "arprot": {
+                            "type": "object",
+                            "properties": {
+                                "width": {
+                                    "const": 3
+                                }
+                            }
+                        },
+                        "arregion": {
+                            "type": "object",
+                            "properties": {
+                                "width": {
+                                    "const": 4
+                                }
+                            }
+                        },
+                        "arqos": {
+                            "type": "object",
+                            "properties": {
+                                "width": {
+                                    "const": 4
+                                }
+                            }
+                        },
+                        "arvalid": {
+                            "type": "object",
+                            "properties": {
+                                "width": {
+                                    "const": 1
+                                }
+                            }
+                        },
+                        "arready": {
+                            "type": "object",
+                            "properties": {
+                                "width": {
+                                    "const": 1
+                                }
+                            }
+                        },
+                        "rresp": {
+                            "type": "object",
+                            "properties": {
+                                "width": {
+                                    "const": 2
+                                }
+                            }
+                        },
+                        "rlast": {
+                            "type": "object",
+                            "properties": {
+                                "width": {
+                                    "const": 1
+                                }
+                            }
+                        },
+                        "rvalid": {
+                            "type": "object",
+                            "properties": {
+                                "width": {
+                                    "const": 1
+                                }
+                            }
+                        },
+                        "rready": {
+                            "type": "object",
+                            "properties": {
+                                "width": {
+                                    "const": 1
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        {
+            "if": {
+                "properties": {
+                    "side": {
+                        "enum": [
+                            "sink",
+                            "end"
+                        ]
+                    }
+                }
+            },
+            "then": {
+                "properties": {
+                    "ports": {
+                        "type": "object",
+                        "description": "Contains ports and their definitions",
+                        "properties": {
+                            "awid": {
+                                "type": "object",
+                                "properties": {
+                                    "dir": {
+                                        "const": "input",
+                                        "default": "input"
+                                    },
+                                    "unconnected": {
+                                        "default": "tie_low"
+                                    }
+                                }
+                            },
+                            "awaddr": {
+                                "type": "object",
+                                "properties": {
+                                    "dir": {
+                                        "const": "input",
+                                        "default": "input"
+                                    },
+                                    "unconnected": {
+                                        "default": "tie_low"
+                                    }
+                                }
+                            },
+                            "awlen": {
+                                "type": "object",
+                                "properties": {
+                                    "dir": {
+                                        "const": "input",
+                                        "default": "input"
+                                    },
+                                    "unconnected": {
+                                        "default": "tie_low"
+                                    }
+                                }
+                            },
+                            "awsize": {
+                                "type": "object",
+                                "properties": {
+                                    "dir": {
+                                        "const": "input",
+                                        "default": "input"
+                                    }
+                                }
+                            },
+                            "awburst": {
+                                "type": "object",
+                                "properties": {
+                                    "dir": {
+                                        "const": "input",
+                                        "default": "input"
+                                    },
+                                    "unconnected": {
+                                        "default": 1
+                                    }
+                                }
+                            },
+                            "awlock": {
+                                "type": "object",
+                                "properties": {
+                                    "dir": {
+                                        "const": "input",
+                                        "default": "input"
+                                    },
+                                    "unconnected": {
+                                        "default": "tie_low"
+                                    }
+                                }
+                            },
+                            "awcache": {
+                                "type": "object",
+                                "properties": {
+                                    "dir": {
+                                        "const": "input",
+                                        "default": "input"
+                                    },
+                                    "unconnected": {
+                                        "default": 3
+                                    }
+                                }
+                            },
+                            "awprot": {
+                                "type": "object",
+                                "properties": {
+                                    "dir": {
+                                        "const": "input",
+                                        "default": "input"
+                                    },
+                                    "unconnected": {
+                                        "default": "tie_low"
+                                    }
+                                }
+                            },
+                            "awregion": {
+                                "type": "object",
+                                "properties": {
+                                    "dir": {
+                                        "const": "input",
+                                        "default": "input"
+                                    },
+                                    "unconnected": {
+                                        "default": "tie_low"
+                                    }
+                                }
+                            },
+                            "awqos": {
+                                "type": "object",
+                                "properties": {
+                                    "dir": {
+                                        "const": "input",
+                                        "default": "input"
+                                    },
+                                    "unconnected": {
+                                        "default": "tie_low"
+                                    }
+                                }
+                            },
+                            "awuser": {
+                                "type": "object",
+                                "properties": {
+                                    "dir": {
+                                        "const": "input",
+                                        "default": "input"
+                                    },
+                                    "unconnected": {
+                                        "default": "tie_low"
+                                    }
+                                }
+                            },
+                            "awvalid": {
+                                "type": "object",
+                                "properties": {
+                                    "dir": {
+                                        "const": "input",
+                                        "default": "input"
+                                    },
+                                    "unconnected": {
+                                        "default": "tie_low"
+                                    }
+                                }
+                            },
+                            "awready": {
+                                "type": "object",
+                                "properties": {
+                                    "dir": {
+                                        "const": "output",
+                                        "default": "output"
+                                    }
+                                }
+                            },
+                            "wid": {
+                                "type": "object",
+                                "properties": {
+                                    "dir": {
+                                        "const": "input",
+                                        "default": "input"
+                                    },
+                                    "unconnected": {
+                                        "default": "tie_low"
+                                    }
+                                }
+                            },
+                            "wdata": {
+                                "type": "object",
+                                "properties": {
+                                    "dir": {
+                                        "const": "input",
+                                        "default": "input"
+                                    },
+                                    "unconnected": {
+                                        "default": "tie_low"
+                                    }
+                                }
+                            },
+                            "wstrb": {
+                                "type": "object",
+                                "properties": {
+                                    "dir": {
+                                        "const": "input",
+                                        "default": "input"
+                                    },
+                                    "unconnected": {
+                                        "default": 1
+                                    }
+                                }
+                            },
+                            "wlast": {
+                                "type": "object",
+                                "properties": {
+                                    "dir": {
+                                        "const": "input",
+                                        "default": "input"
+                                    },
+                                    "unconnected": {
+                                        "default": "tie_low"
+                                    }
+                                }
+                            },
+                            "wuser": {
+                                "type": "object",
+                                "properties": {
+                                    "dir": {
+                                        "const": "input",
+                                        "default": "input"
+                                    },
+                                    "unconnected": {
+                                        "default": "tie_low"
+                                    }
+                                }
+                            },
+                            "wvalid": {
+                                "type": "object",
+                                "properties": {
+                                    "dir": {
+                                        "const": "input",
+                                        "default": "input"
+                                    },
+                                    "unconnected": {
+                                        "default": "tie_low"
+                                    }
+                                }
+                            },
+                            "wready": {
+                                "type": "object",
+                                "properties": {
+                                    "dir": {
+                                        "const": "output",
+                                        "default": "output"
+                                    }
+                                }
+                            },
+                            "bid": {
+                                "type": "object",
+                                "properties": {
+                                    "dir": {
+                                        "const": "output",
+                                        "default": "output"
+                                    }
+                                }
+                            },
+                            "bresp": {
+                                "type": "object",
+                                "properties": {
+                                    "dir": {
+                                        "const": "output",
+                                        "default": "output"
+                                    }
+                                }
+                            },
+                            "buser": {
+                                "type": "object",
+                                "properties": {
+                                    "dir": {
+                                        "const": "output",
+                                        "default": "output"
+                                    }
+                                }
+                            },
+                            "bvalid": {
+                                "type": "object",
+                                "properties": {
+                                    "dir": {
+                                        "const": "output",
+                                        "default": "output"
+                                    }
+                                }
+                            },
+                            "bready": {
+                                "type": "object",
+                                "properties": {
+                                    "dir": {
+                                        "const": "input",
+                                        "default": "input"
+                                    },
+                                    "unconnected": {
+                                        "default": "tie_low"
+                                    }
+                                }
+                            },
+                            "arid": {
+                                "type": "object",
+                                "properties": {
+                                    "dir": {
+                                        "const": "input",
+                                        "default": "input"
+                                    },
+                                    "unconnected": {
+                                        "default": "tie_low"
+                                    }
+                                }
+                            },
+                            "araddr": {
+                                "type": "object",
+                                "properties": {
+                                    "dir": {
+                                        "const": "input",
+                                        "default": "input"
+                                    },
+                                    "unconnected": {
+                                        "default": "tie_low"
+                                    }
+                                }
+                            },
+                            "arlen": {
+                                "type": "object",
+                                "properties": {
+                                    "dir": {
+                                        "const": "input",
+                                        "default": "input"
+                                    },
+                                    "unconnected": {
+                                        "default": "tie_low"
+                                    }
+                                }
+                            },
+                            "arsize": {
+                                "type": "object",
+                                "properties": {
+                                    "dir": {
+                                        "const": "input",
+                                        "default": "input"
+                                    }
+                                }
+                            },
+                            "arburst": {
+                                "type": "object",
+                                "properties": {
+                                    "dir": {
+                                        "const": "input",
+                                        "default": "input"
+                                    },
+                                    "unconnected": {
+                                        "default": 1
+                                    }
+                                }
+                            },
+                            "arlock": {
+                                "type": "object",
+                                "properties": {
+                                    "dir": {
+                                        "const": "input",
+                                        "default": "input"
+                                    },
+                                    "unconnected": {
+                                        "default": "tie_low"
+                                    }
+                                }
+                            },
+                            "arcache": {
+                                "type": "object",
+                                "properties": {
+                                    "dir": {
+                                        "const": "input",
+                                        "default": "input"
+                                    },
+                                    "unconnected": {
+                                        "default": 3
+                                    }
+                                }
+                            },
+                            "arprot": {
+                                "type": "object",
+                                "properties": {
+                                    "dir": {
+                                        "const": "input",
+                                        "default": "input"
+                                    },
+                                    "unconnected": {
+                                        "default": "tie_low"
+                                    }
+                                }
+                            },
+                            "arregion": {
+                                "type": "object",
+                                "properties": {
+                                    "dir": {
+                                        "const": "input",
+                                        "default": "input"
+                                    },
+                                    "unconnected": {
+                                        "default": "tie_low"
+                                    }
+                                }
+                            },
+                            "arqos": {
+                                "type": "object",
+                                "properties": {
+                                    "dir": {
+                                        "const": "input",
+                                        "default": "input"
+                                    },
+                                    "unconnected": {
+                                        "default": "tie_low"
+                                    }
+                                }
+                            },
+                            "aruser": {
+                                "type": "object",
+                                "properties": {
+                                    "dir": {
+                                        "const": "input",
+                                        "default": "input"
+                                    },
+                                    "unconnected": {
+                                        "default": "tie_low"
+                                    }
+                                }
+                            },
+                            "arvalid": {
+                                "type": "object",
+                                "properties": {
+                                    "dir": {
+                                        "const": "input",
+                                        "default": "input"
+                                    },
+                                    "unconnected": {
+                                        "default": "tie_low"
+                                    }
+                                }
+                            },
+                            "arready": {
+                                "type": "object",
+                                "properties": {
+                                    "dir": {
+                                        "const": "output",
+                                        "default": "output"
+                                    }
+                                }
+                            },
+                            "rid": {
+                                "type": "object",
+                                "properties": {
+                                    "dir": {
+                                        "const": "output",
+                                        "default": "output"
+                                    }
+                                }
+                            },
+                            "rdata": {
+                                "type": "object",
+                                "properties": {
+                                    "dir": {
+                                        "const": "output",
+                                        "default": "output"
+                                    }
+                                }
+                            },
+                            "rresp": {
+                                "type": "object",
+                                "properties": {
+                                    "dir": {
+                                        "const": "output",
+                                        "default": "output"
+                                    }
+                                }
+                            },
+                            "rlast": {
+                                "type": "object",
+                                "properties": {
+                                    "dir": {
+                                        "const": "output",
+                                        "default": "output"
+                                    }
+                                }
+                            },
+                            "ruser": {
+                                "type": "object",
+                                "properties": {
+                                    "dir": {
+                                        "const": "output",
+                                        "default": "output"
+                                    }
+                                }
+                            },
+                            "rvalid": {
+                                "type": "object",
+                                "properties": {
+                                    "dir": {
+                                        "const": "output",
+                                        "default": "output"
+                                    }
+                                }
+                            },
+                            "rready": {
+                                "type": "object",
+                                "properties": {
+                                    "dir": {
+                                        "const": "input",
+                                        "default": "input"
+                                    },
+                                    "unconnected": {
+                                        "default": "tie_low"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "else": {
+                "properties": {
+                    "ports": {
+                        "type": "object",
+                        "description": "Contains ports and their definitions",
+                        "properties": {
+                            "awid": {
+                                "type": "object",
+                                "properties": {
+                                    "dir": {
+                                        "const": "output",
+                                        "default": "output"
+                                    }
+                                }
+                            },
+                            "awaddr": {
+                                "type": "object",
+                                "properties": {
+                                    "dir": {
+                                        "const": "output",
+                                        "default": "output"
+                                    }
+                                }
+                            },
+                            "awlen": {
+                                "type": "object",
+                                "properties": {
+                                    "dir": {
+                                        "const": "output",
+                                        "default": "output"
+                                    }
+                                }
+                            },
+                            "awsize": {
+                                "type": "object",
+                                "properties": {
+                                    "dir": {
+                                        "const": "output",
+                                        "default": "output"
+                                    }
+                                }
+                            },
+                            "awburst": {
+                                "type": "object",
+                                "properties": {
+                                    "dir": {
+                                        "const": "output",
+                                        "default": "output"
+                                    }
+                                }
+                            },
+                            "awlock": {
+                                "type": "object",
+                                "properties": {
+                                    "dir": {
+                                        "const": "output",
+                                        "default": "output"
+                                    }
+                                }
+                            },
+                            "awcache": {
+                                "type": "object",
+                                "properties": {
+                                    "dir": {
+                                        "const": "output",
+                                        "default": "output"
+                                    }
+                                }
+                            },
+                            "awprot": {
+                                "type": "object",
+                                "properties": {
+                                    "dir": {
+                                        "const": "output",
+                                        "default": "output"
+                                    }
+                                }
+                            },
+                            "awregion": {
+                                "type": "object",
+                                "properties": {
+                                    "dir": {
+                                        "const": "output",
+                                        "default": "output"
+                                    }
+                                }
+                            },
+                            "awqos": {
+                                "type": "object",
+                                "properties": {
+                                    "dir": {
+                                        "const": "output",
+                                        "default": "output"
+                                    }
+                                }
+                            },
+                            "awuser": {
+                                "type": "object",
+                                "properties": {
+                                    "dir": {
+                                        "const": "output",
+                                        "default": "output"
+                                    }
+                                }
+                            },
+                            "awvalid": {
+                                "type": "object",
+                                "properties": {
+                                    "dir": {
+                                        "const": "output",
+                                        "default": "output"
+                                    }
+                                }
+                            },
+                            "awready": {
+                                "type": "object",
+                                "properties": {
+                                    "dir": {
+                                        "const": "input",
+                                        "default": "input"
+                                    },
+                                    "unconnected": {
+                                        "default": "tie_low"
+                                    }
+                                }
+                            },
+                            "wid": {
+                                "type": "object",
+                                "properties": {
+                                    "dir": {
+                                        "const": "output",
+                                        "default": "output"
+                                    }
+                                }
+                            },
+                            "wdata": {
+                                "type": "object",
+                                "properties": {
+                                    "dir": {
+                                        "const": "output",
+                                        "default": "output"
+                                    }
+                                }
+                            },
+                            "wstrb": {
+                                "type": "object",
+                                "properties": {
+                                    "dir": {
+                                        "const": "output",
+                                        "default": "output"
+                                    }
+                                }
+                            },
+                            "wlast": {
+                                "type": "object",
+                                "properties": {
+                                    "dir": {
+                                        "const": "output",
+                                        "default": "output"
+                                    }
+                                }
+                            },
+                            "wuser": {
+                                "type": "object",
+                                "properties": {
+                                    "dir": {
+                                        "const": "output",
+                                        "default": "output"
+                                    }
+                                }
+                            },
+                            "wvalid": {
+                                "type": "object",
+                                "properties": {
+                                    "dir": {
+                                        "const": "output",
+                                        "default": "output"
+                                    }
+                                }
+                            },
+                            "wready": {
+                                "type": "object",
+                                "properties": {
+                                    "dir": {
+                                        "const": "input",
+                                        "default": "input"
+                                    },
+                                    "unconnected": {
+                                        "default": "tie_low"
+                                    }
+                                }
+                            },
+                            "bid": {
+                                "type": "object",
+                                "properties": {
+                                    "dir": {
+                                        "const": "input",
+                                        "default": "input"
+                                    },
+                                    "unconnected": {
+                                        "default": "tie_low"
+                                    }
+                                }
+                            },
+                            "bresp": {
+                                "type": "object",
+                                "properties": {
+                                    "dir": {
+                                        "const": "input",
+                                        "default": "input"
+                                    },
+                                    "unconnected": {
+                                        "default": "tie_low"
+                                    }
+                                }
+                            },
+                            "buser": {
+                                "type": "object",
+                                "properties": {
+                                    "dir": {
+                                        "const": "input",
+                                        "default": "input"
+                                    },
+                                    "unconnected": {
+                                        "default": "tie_low"
+                                    }
+                                }
+                            },
+                            "bvalid": {
+                                "type": "object",
+                                "properties": {
+                                    "dir": {
+                                        "const": "input",
+                                        "default": "input"
+                                    },
+                                    "unconnected": {
+                                        "default": "tie_low"
+                                    }
+                                }
+                            },
+                            "bready": {
+                                "type": "object",
+                                "properties": {
+                                    "dir": {
+                                        "const": "output",
+                                        "default": "output"
+                                    }
+                                }
+                            },
+                            "arid": {
+                                "type": "object",
+                                "properties": {
+                                    "dir": {
+                                        "const": "output",
+                                        "default": "output"
+                                    }
+                                }
+                            },
+                            "araddr": {
+                                "type": "object",
+                                "properties": {
+                                    "dir": {
+                                        "const": "output",
+                                        "default": "output"
+                                    }
+                                }
+                            },
+                            "arlen": {
+                                "type": "object",
+                                "properties": {
+                                    "dir": {
+                                        "const": "output",
+                                        "default": "output"
+                                    }
+                                }
+                            },
+                            "arsize": {
+                                "type": "object",
+                                "properties": {
+                                    "dir": {
+                                        "const": "output",
+                                        "default": "output"
+                                    }
+                                }
+                            },
+                            "arburst": {
+                                "type": "object",
+                                "properties": {
+                                    "dir": {
+                                        "const": "output",
+                                        "default": "output"
+                                    }
+                                }
+                            },
+                            "arlock": {
+                                "type": "object",
+                                "properties": {
+                                    "dir": {
+                                        "const": "output",
+                                        "default": "output"
+                                    }
+                                }
+                            },
+                            "arcache": {
+                                "type": "object",
+                                "properties": {
+                                    "dir": {
+                                        "const": "output",
+                                        "default": "output"
+                                    }
+                                }
+                            },
+                            "arprot": {
+                                "type": "object",
+                                "properties": {
+                                    "dir": {
+                                        "const": "output",
+                                        "default": "output"
+                                    }
+                                }
+                            },
+                            "arregion": {
+                                "type": "object",
+                                "properties": {
+                                    "dir": {
+                                        "const": "output",
+                                        "default": "output"
+                                    }
+                                }
+                            },
+                            "arqos": {
+                                "type": "object",
+                                "properties": {
+                                    "dir": {
+                                        "const": "output",
+                                        "default": "output"
+                                    }
+                                }
+                            },
+                            "aruser": {
+                                "type": "object",
+                                "properties": {
+                                    "dir": {
+                                        "const": "output",
+                                        "default": "output"
+                                    }
+                                }
+                            },
+                            "arvalid": {
+                                "type": "object",
+                                "properties": {
+                                    "dir": {
+                                        "const": "output",
+                                        "default": "output"
+                                    }
+                                }
+                            },
+                            "arready": {
+                                "type": "object",
+                                "properties": {
+                                    "dir": {
+                                        "const": "input",
+                                        "default": "input"
+                                    },
+                                    "unconnected": {
+                                        "default": "tie_low"
+                                    }
+                                }
+                            },
+                            "rid": {
+                                "type": "object",
+                                "properties": {
+                                    "dir": {
+                                        "const": "input",
+                                        "default": "input"
+                                    },
+                                    "unconnected": {
+                                        "default": "tie_low"
+                                    }
+                                }
+                            },
+                            "rdata": {
+                                "type": "object",
+                                "properties": {
+                                    "dir": {
+                                        "const": "input",
+                                        "default": "input"
+                                    },
+                                    "unconnected": {
+                                        "default": "tie_low"
+                                    }
+                                }
+                            },
+                            "rresp": {
+                                "type": "object",
+                                "properties": {
+                                    "dir": {
+                                        "const": "input",
+                                        "default": "input"
+                                    },
+                                    "unconnected": {
+                                        "default": "tie_low"
+                                    }
+                                }
+                            },
+                            "rlast": {
+                                "type": "object",
+                                "properties": {
+                                    "dir": {
+                                        "const": "input",
+                                        "default": "input"
+                                    },
+                                    "unconnected": {
+                                        "default": "tie_low"
+                                    }
+                                }
+                            },
+                            "ruser": {
+                                "type": "object",
+                                "properties": {
+                                    "dir": {
+                                        "const": "input",
+                                        "default": "input"
+                                    },
+                                    "unconnected": {
+                                        "default": "tie_low"
+                                    }
+                                }
+                            },
+                            "rvalid": {
+                                "type": "object",
+                                "properties": {
+                                    "dir": {
+                                        "const": "input",
+                                        "default": "input"
+                                    },
+                                    "unconnected": {
+                                        "default": "tie_low"
+                                    }
+                                }
+                            },
+                            "rready": {
+                                "type": "object",
+                                "properties": {
+                                    "dir": {
+                                        "const": "output",
+                                        "default": "output"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    ]
+}

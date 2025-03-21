@@ -1,0 +1,83 @@
+{
+    "name": "Router",
+    "ip_name": "Router",
+    "parameters": {
+        "N":null,
+        "INDEX":null,
+        "INPUTS":4,
+        "OUTPUTS":4,
+        "DATA_WIDTH":32,
+        "VC_FLOW_CONTROL":0,
+        "FlitPerPacket":6
+    },
+    "interfaces": [
+        {
+            "interface_name": "clock",
+            "type": "clock",
+            "side": "sink",
+            "ports": {
+                "clk": {
+                    "name": "clk",
+                    "dir": "input",
+                    "width": 1
+                }
+            }
+        },
+        {
+            "interface_name": "reset",
+            "type": "reset",
+            "side": "sink",
+            "ports": {
+                "reset": {
+                    "name": "rst",
+                    "dir": "input",
+                    "width": 1
+                }
+            }
+        },
+        {
+            "interface_name": "data_in",
+            "type": "noxybus",
+            "side": "sink",
+            "ports": {
+                "valid": {
+                    "name": "valid_in_bus",
+                    "dir": "input",
+                    "dynamic_width": "INPUTS"
+                },
+                "ready": {
+                    "name": "ready_in_bus",
+                    "dir": "output",
+                    "dynamic_width": "INPUTS"
+                }
+                ,"data": {
+                    "name": "data_in_bus",
+                    "dir": "input",
+                    "dynamic_width": "/self._parameters['INPUTS']*self._parameters['DATA_WIDTH']"
+                }
+            }
+        },
+        {
+            "interface_name": "data_out",
+            "type": "noxybus",
+            "side": "source",
+            "ports": {
+                "valid": {
+                    "name": "valid_out_bus",
+                    "dir": "output",
+                    "dynamic_width": "OUTPUTS"
+                },
+                "ready": {
+                    "name": "ready_out_bus",
+                    "dir": "input",
+                    "dynamic_width": "OUTPUTS"
+                }
+                ,"data": {
+                    "name": "data_out_bus",
+                    "dir": "output",
+                    "dynamic_width": "/self._parameters['OUTPUTS']*self._parameters['DATA_WIDTH']"
+                }
+            }
+        }
+    ]
+}

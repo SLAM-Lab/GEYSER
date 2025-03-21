@@ -1,0 +1,315 @@
+from geysergen.generic_modules.intel.mm_interconnect import avalon_mm_interconnect
+from geysergen.generic_modules.xilinx.series7.bram_interconnect import bram_mm_interconnect
+import subprocess
+from typing import NoReturn
+from geysergen.utils.v_class import v_class
+import os
+import platform
+import copy
+from typing import Callable
+from enum import Enum
+def Assert(result:bool,message:str)->None|NoReturn:
+    if result:
+        return
+    print("Failed check: "+message)
+    exit(1)
+
+class GenerateType(Enum):
+    whole_file = 1
+    update_base =2
+
+class verilog_generator:
+
+    # The following key is used to define the default interconnects to be inserted on interfaces
+    default_interconnects = {
+        "avalon":avalon_mm_interconnect,
+        "bram":bram_mm_interconnect
+    }
+
+    def __init__(self,output_file:str,gen_type:GenerateType = GenerateType.whole_file,start_file:str=None) -> None:
+        """
+        Initialize the verilog_generator base class
+
+        start_file = File that will be added to by the generator. An endmodule statement will be added at the end
+        output_file = File that will be created and filled with the generated verilog
+        """
+
+        self._gen_type = gen_type
+
+        self._start_file = start_file
+        self._output_file = output_file
+        self._root_module = None
+        self._sub_modules:list[v_class] = (
+            []
+        )  # This is all the modules that will need to have their generate methods called
+        self._wires = (
+            []
+        )  # These are all the wires that we will need to add to the module
+        self._assigns = (
+            []
+        )  # These are all the wire assignments that will be added at the end of the file
+        self._interconnects = []  # Array for all of the interconnects to be register
+        self.chosen_interconnects = copy.deepcopy(verilog_generator.default_interconnects)
+
+    def add_wire(self, name: str, width: int) -> None:
+        """Create a wire with the specified name and width"""
+        if width<=0:
+            self.fail("Wire {} has width {} which is less than 1".format(name,width))
+        self._wires.append({"name": name, "width": width})
+
+    def add_assignment(self, sink_wire: str, source_wire: str) -> None:
+        """Add `assign sink_wire = source_wire;` to the verilog generation"""
+        self._assigns.append({"sink_wire": sink_wire, "source_wire": source_wire})
+
+    def register_module(self, module:v_class) -> None:
+        """Pass a submodule class to be registered and generated"""
+        self._sub_modules.append(module)
+
+    def invert_wire(self,name:str,width:int) -> str:
+        """have a wire inverted"""
+        self.add_wire(name+"_auto_n",width)
+        self.add_assignment(name,"~"+name+"_auto_n")
+        return name+"_auto_n"
+
+
+    def register_interconnect(self, interconnect) -> None:
+        """This is essentially a method to add modules during the generation phase.
+        The only reason I could think this would be necessary would be for interconnects. But theoretically any modules added once.
+        generation has started could register through this function. Modules registered in this manner will only receive a write call
+        and must already have their code generated and ready to write
+        """
+        self._interconnects.append(interconnect)
+
+    def set_root_module(self,root_module:v_class) -> None:
+        """
+        So the root module is special. With this module all interfaces are assumed to be wires available in the template Verilog
+        file that is provided/generated. This will prevent extra wires from being created within the generated file which will hopefully make the
+        generated file at least slightly more readable.
+
+        Only one root module can be assigned.
+        """
+
+        if self._root_module!=None:
+            print("ERROR: tried to assign more than one root module")
+            exit(1)
+        self._root_module=root_module
+        self._sub_modules.remove(root_module) # Remove since root module shouldn't have it's generate function called.
+
+    def set_interconnect(self,interface_type:str,interconnect_class) -> None:
+        """Set what interconnect should be generated for the specified interface"""
+        self.chosen_interconnects[interface_type]=interconnect_class
+    def find_interconnect(self,interconnect_type:str): 
+        """Find the current interconnect for an interface or return None"""
+        return self.chosen_interconnects.get(interconnect_type)
+
+    def __create_file(self,out_file) -> None:
+        """
+        Creates the top level file in the case where it needs to be generated. 
+        """
+
+        #First we need to make sure a root was set
+        if self._root_module==None:
+            self.fail("File generation failed. No root module specified")
+        
+        out_file.write("//Platform generated by GEYSER\n")
+        out_file.write("module ")
+        #Only add parameters if they are present
+        if self._root_module._parameters:
+            out_file.write("#(")
+            first = True
+            for key,val in self._root_module._parameters.items():
+                if not first:
+                    out_file.write(",\n")
+                first=False
+                if type(val)==str and not "'" in val:
+                    out_file.write("parameter {} = \"{}\"".format(key,val))
+                else:
+                    out_file.write("parameter {} = {}".format(key,val))
+            out_file.write(")\n")
+        
+        #Now add the name of the module 
+        out_file.write(self._root_module._ip_name)
+
+        #Finally we need to add our ports list.
+        out_file.write(" (\n")
+        first = True
+        for a,inter in self._root_module._interfaces:
+            for t,port in inter['ports'].items():
+                if not first:
+                    out_file.write(",\n")
+                first=False
+                out_file.write("{} wire[{}:0] {}".format("output" if "input"==port['dir'] else "input",port["width"]-1, port["name"]))
+        out_file.write(");\n")
+
+
+
+    def generate_verilog(self, run_formatter:bool=True) -> None:
+        """Create the Verilog file based upon the connections and modules registered with this generator.
+        
+        **run_formatter** - when true GEYSER will run verible on the file to make it more readable. Can add a significant amount of time to the generation process
+        """
+
+        if len(self._sub_modules) == 0:
+            print("No modules were registered with the generator")
+            exit(1)
+
+        with open(self._output_file, "w") as out_file:
+            if self._gen_type==GenerateType.update_base:
+                with open(self._start_file, "r") as in_file:
+                    for line in in_file:
+                        out_file.write(line)  # Copy everything from the input file
+            else:
+                self.__create_file(out_file)
+
+            out_file.write(
+                "//Start Generation\n//Everything below this line is generated do not make changes you want to keep\n"
+            )
+
+            # Generate all the required stuff here
+            for module in self._sub_modules:
+                module.generate()
+
+            out_file.write("\n//Generated wires\n\n")
+            # Start by writing all the wires to the file
+            for wire in self._wires:
+                if wire["width"]==1:
+                    out_file.write("wire {};\n".format(wire["name"]))
+                else:
+                    out_file.write("wire[{}:0] {};\n".format(wire["width"]-1, wire["name"]))
+
+            out_file.write("\n//Generated Modules\n\n")
+            # Continue by writing all of the modules to the file
+            for module in self._sub_modules:
+                module.write(out_file)
+
+            out_file.write("\n//Interconnects below\n\n")
+
+            # Now write all of the interconnects to the file
+            for interconnect in self._interconnects:
+                interconnect.write(out_file)
+
+            out_file.write("\n//Assignments for shared connections\n\n")
+            # Next we write all of the assignments to the file
+            for assign in self._assigns:
+                out_file.write("assign {} = {};\n".format(assign["sink_wire"], assign["source_wire"]))
+
+            # Lastly we are going to closeout our module\
+            out_file.write("\n//End generation\n")
+            out_file.write("endmodule\n")
+            out_file.close()
+
+            #Now we are going to run Verible to make it pretty. I should probably just make it generate well from the start.
+            if run_formatter:
+                dirname, filename = os.path.split(os.path.abspath(__file__))
+                if platform.system() == "Windows":
+                    subprocess.run([dirname+"/./formatter/verible-verilog-format.exe", "--inplace", self._output_file])
+                elif platform.system() == "Linux":
+                    subprocess.run([dirname+"/./formatter/verible-verilog-format", "--inplace", self._output_file]) 
+                else:
+                    print("Unsupported OS for formatting. File will remain unformatted")
+
+
+    def fail(self,message:str) -> NoReturn:
+        Assert(False,message)
+    #Below here will probably get really nasty
+
+    def connect(self,interface_1_call:Callable[[],tuple[v_class,str]],interface_2_call:Callable[[],tuple[v_class,str]]) -> None:
+        """Connect interface 1 to interface 2"""
+
+
+        #The connect function takes in callable functions we now need to execute them to get the necessary interface information
+        module1, interface1 = interface_1_call()
+        module2, interface2 = interface_2_call()
+
+        #Determine if the root is here since special handling is required 
+        root_here = False
+        if module1 == self._root_module:
+            root_here=True
+        
+        if module2 == self._root_module:
+            root_here=True
+            #Swap module1 and module2 to make things easier
+            m_hold = module1
+            module1=module2
+            module2=m_hold
+            m_hold=interface2
+            interface2=interface1
+            interface1=m_hold
+
+        
+        # Get the interface definitions for the passed interfaces.
+        m1_def = getattr(module1,"{}_interface_definition".format(interface1))
+        m2_def = getattr(module2,"{}_interface_definition".format(interface2))
+        m1_int_side = m1_def['side']
+        m1_int_def:dict = m1_def['ports']
+        m1_int_name = m1_def['name']
+        m2_int_def = m2_def['ports']
+        m2_int_name = m2_def['name']
+        m2_int_side = m2_def['side']
+
+        # Do some baseline checks to ensure the connection is valid
+        if (m1_def['type']!=m2_def['type']):
+            self.fail(" Incompatible types: Mod {}, interface {} has type {} and Mod {}, interface {} has type {}".format(module1._module_instance_name,m1_int_name,m1_def['type'],module2._module_instance_name,m2_int_name,m2_def['type']))
+        if ((m1_int_side == 'sink') or (m1_int_side == 'end')) == ((m2_int_side == 'sink') or (m2_int_side == 'end')):
+            self.fail(" Mod {}, interface - {} and Mod {}, interface {} are both sources or sinks".format(module1._module_instance_name,m1_int_name,module2._module_instance_name,m2_int_name))
+        
+        # If there is currently an interconnect selected for the interface tell modules what it is so they can use it later if necessary
+        con_type = self.find_interconnect(m1_def['type'])
+        module1.interface_interconnect_sel[interface1]= con_type
+        module2.interface_interconnect_sel[interface2]= con_type
+
+        m1_connects = []
+        m2_connects = []
+        #Next order of business is we will find every wire that both modules have in common and create a wire
+        for key in m1_int_def.keys():
+
+            #deal with the possibility of inverted signals like reset
+            key_found = False
+            if key in m2_int_def:
+                key_found=True
+                m2_key=key
+            elif key[-2:]=="_n":
+                if key[:-2] in m2_int_def:
+                    key_found = True
+                    m2_key=key[:-2]
+            else:
+                if key+"_n" in m2_int_def:
+                    key_found = True
+                    m2_key=key+"_n"
+
+            # If a port was detected on both interfaces try to connect it
+            if key_found:
+                Assert(m1_int_def[key]['dir']!=m2_int_def[m2_key]['dir'],"{} in {},{} to {},{} have same dir".format(key,module1._module_instance_name,m1_int_name,module2._module_instance_name,m2_int_name))
+                if m1_int_def[key]['dir']=='output':
+                    use_type=key
+                else:
+                    use_type=m2_key
+
+
+                #The other module has the same connection type lets wire them up
+                if root_here:
+                    #We are just going to use the stuff from the root module
+                    if use_type == key:
+                        #root module is the output or types match just connected directly
+                        m2_connects.append({'type':use_type,'connection_port_name':m1_int_def[key]['name'],"width":m1_int_def[key]['width']})
+                    else:
+                        m2_connects.append({'type':use_type,'connection_port_name':self.invert_wire(m1_int_def[key]['name'],m1_int_def[key]['width']),"width":m1_int_def[key]['width']})
+                            
+                else:
+                    #figure out which side has the smaller width and use that one to create a wire
+                    wire_width =  int(m2_int_def[m2_key]['width']) if int(m2_int_def[m2_key]['width'])<int(m1_int_def[key]['width']) else int(m1_int_def[key]['width'])
+                    wire_name = "{0}_{2}_to_{1}_{3}".format(module1._module_instance_name,module2._module_instance_name,m1_int_def[key]['name'],m2_int_def[m2_key]['name'])
+                    self.add_wire(wire_name,wire_width)
+                    # Now we need to wire everything up first module 1 then module 2
+                    m2_connects.append({'type':use_type,'connection_port_name':wire_name,"width":wire_width})
+                    m1_connects.append({'type':use_type,'connection_port_name':wire_name,"width":wire_width})
+        
+        #We have created all our wires can filled the interface list so now add the connections to the modules
+        if not root_here:
+            #append m1_connect to the interface list
+            getattr(module1,"{}_connections".format(interface1)).append(m1_connects)
+
+        #append m2_connect to the module2 interface list
+        getattr(module2,"{}_connections".format(interface2)).append(m2_connects)
+
+

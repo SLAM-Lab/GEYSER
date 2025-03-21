@@ -1,0 +1,63 @@
+{
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "$id": "urn:help:base",
+    "title": "Helper Schemas",
+    "description": "Just a bunch of helper schemas to reduce bloat in other places",
+    "$defs": {
+      "def_out": {
+        "$id": "urn:help:def_out",
+        "type": "object",
+        "properties": {
+          "dir": {
+            "const": "output",
+            "default": "output"
+          }
+        }
+      },
+      "def_in": {
+        "$id": "urn:help:def_in",
+        "type": "object",
+        "properties": {
+          "dir": {
+            "const": "input",
+            "default": "input"
+          }
+        }
+      },
+      "def_in_low": {
+        "$id": "urn:help:def_in_low",
+        "type": "object",
+        "properties": {
+          "dir": {
+            "const": "input",
+            "default": "input"
+          },
+          "unconnected" :{
+            "default":"tie_low"
+          }
+        }
+      },
+      "def_in_high": {
+        "$id": "urn:help:def_in_high",
+        "type": "object",
+        "properties": {
+          "dir": {
+            "const": "input",
+            "default": "input"
+          },
+          "unconnected" :{
+            "default":"tie_high"
+          }
+        }
+      },
+      "w1": {
+        "$id": "urn:help:w1",
+        "type": "object",
+        "properties": {
+          "width": {
+            "const": 1
+          }
+        }
+      }
+    }
+}

@@ -1,0 +1,29 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "geysergen"
+version = "0.0.1"
+authors = [
+  { name="Austin James", email="ajamesut@utexas.edu" },
+]
+
+description = "A Python framework for hardware design integration"
+readme = "README.md"
+requires-python = ">=3.8"
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "Development Status :: 4 - Beta",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+]
+dependencies = ["jsonschema","lxml"]
+[project.urls]
+Homepage = "https://gitlab.com/AJames755/geyser"
+Issues = "https://gitlab.com/AJames755/geyser/-/issues"
+
+[project.scripts]
+module_gen = "geysergen.scripts.module_gen:main"
+parse_ipxact = "geysergen.scripts.ipxact_parse:main"
+parse_ipxact_interface = "geysergen.scripts.parse_ipxact_inter_description:main"

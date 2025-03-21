@@ -1,0 +1,45 @@
+{
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "$id":"urn:base:special",
+    "oneOf": [
+        {
+            "$comment":"clock schema",
+            "$ref": "urn:interfaces:clock"
+        },
+        {
+            "$comment":"reset schema",
+            "$ref": "urn:interfaces:reset"
+        },
+        {
+            "$comment":"intel avalon schema",
+            "$ref": "urn:interfaces:avalon"
+        },
+        {
+            "$comment":"xilinx aximm schema",
+            "$ref": "urn:interfaces:aximm"
+        },
+        {
+            "$comment":"xilinx bram schema",
+            "$ref": "urn:interfaces:bram"
+        },
+        {
+            "type": "object",
+            "properties": {
+                "type": {
+                    "description": "The interface type",
+                    "type": "string",
+                    "$comment":"add interfaces which must work to the list below",
+                    "not": {
+                        "enum": [
+                            "avalon",
+                            "clock",
+                            "reset",
+                            "aximm",
+                            "bram"
+                        ]
+                    }
+                }
+            }
+        }
+    ]
+}

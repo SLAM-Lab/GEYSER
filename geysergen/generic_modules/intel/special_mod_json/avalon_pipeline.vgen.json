@@ -1,0 +1,73 @@
+{
+    "name": "avalon_pipline",
+    "ip_name": "interface_pipeline",
+    "parameters": {
+        "CYCLES":null
+    },
+    "interfaces": [
+        {
+            "interface_name":"clock",
+            "side":"sink",
+            "type":"clock",
+            "ports":{
+                "clk":{
+                    "name":"clk",
+                    "unconnected":"forbidden"
+                }
+            }
+        },
+        {
+            "interface_name": "pipe_in",
+            "side": "sink",
+            "type": "avalon",
+            "ports": {
+                "writedata": {
+                    "name": "writedata_in",
+                    "width": 256
+                },
+                "readdata": {
+                    "name": "readdata_out",
+                    "width": 256
+                },
+                "address": {
+                    "name": "address_in",
+                    "width": 64
+                },
+                "write": {
+                    "name": "write_in"
+                },
+                "read": {
+                    "name": "read_in"
+                }
+            }
+        },
+        {
+            "interface_name": "pipe_out",
+            "side": "source",
+            "type": "avalon",
+            "interconnect_settings": {
+                "pass_clock": "clock"
+            },
+            "ports": {
+                "writedata": {
+                    "name": "writedata_out",
+                    "width": 256
+                },
+                "readdata": {
+                    "name": "readdata_in",
+                    "width": 256
+                },
+                "address": {
+                    "name": "address_out",
+                    "width": 64
+                },
+                "write": {
+                    "name": "write_out"
+                },
+                "read": {
+                    "name": "read_out"
+                }
+            }
+        }
+    ]
+}

@@ -1,0 +1,81 @@
+{
+    "$schema": "../schemas/vscode.schema.json",
+    "name": "noxy_top",
+    "ip_name": "noxy_top",
+    "parameters": {
+        "DATA_WIDTH": null
+    },
+    "hidden_parameters": {},
+    "interfaces": [
+        {
+            "interface_name": "clock",
+            "type": "clock",
+            "side": "source",
+            "interconnect_settings": {},
+            "ports": {
+                "clk": {
+                    "name": "clk",
+                    "dir": "output",
+                    "width": 1
+                }
+            }
+        },
+        {
+            "interface_name": "reset",
+            "type": "reset",
+            "side": "source",
+            "interconnect_settings": {
+                "pass_clock": "clock"
+            },
+            "ports": {
+                "reset": {
+                    "name": "rst",
+                    "dir": "output",
+                    "width": 1
+                }
+            }
+        },
+        {
+            "interface_name": "Node?_in",
+            "type": "noxybus",
+            "side": "source",
+            "multi":["/list(range(0,10000))"],
+            "ports": {
+                "valid": {
+                    "name": "Node?_valid_in",
+                    "dir": "output"
+                },
+                "ready": {
+                    "name": "Node?_ready_in",
+                    "dir": "input"
+                },
+                "data": {
+                    "name": "Node?_data_in",
+                    "dir": "output",
+                    "dynamic_width": "DATA_WIDTH"
+                }
+            }
+        },
+        {
+            "interface_name": "Node?_out",
+            "multi": ["/list(range(0,10000))"],
+            "type": "noxybus",
+            "side": "sink",
+            "ports": {
+                "valid": {
+                    "name": "Node?_valid_out",
+                    "dir": "input"
+                },
+                "ready": {
+                    "name": "Node?_ready_out",
+                    "dir": "output"
+                },
+                "data": {
+                    "name": "Node?_data_out",
+                    "dir": "input",
+                    "dynamic_width": "DATA_WIDTH"
+                }
+            }
+        }
+    ]
+}

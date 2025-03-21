@@ -1,0 +1,188 @@
+{
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "title": "Verilog Generator Schema",
+    "description": "Default Verilog Generator Schema",
+    "type": "object",
+    "properties": {
+        "name": {
+            "description": "The name to give the generated python module",
+            "type": "string"
+        },
+        "ip_name": {
+            "description": "The verilog name of the module",
+            "type": "string"
+        },
+        "parameters": {
+            "description": "The verilog parameters to be passed to this module, a assignment of null requires the user to provide the param. If you wish to include a apostrophe ' in a a string param you must add quotes around your string. Otherwise it will be detected as a sized int like 27'h00.",
+            "type": "object",
+            "additionalProperties": {
+                "type": [
+                    "string",
+                    "number",
+                    "integer",
+                    "boolean",
+                    "null"
+                ]
+            },
+            "examples":[
+                {
+                    "PORT_WIDTH":32,
+                    "START_COUNT":"27'd0",
+                    "PIPELINE_COUNT":null
+                }
+            ]
+        },
+        "hidden_parameters": {
+            "description": "parameters that should be populated but that shouldn't be exposed in the python module interface",
+            "type": "object",
+            "additionalProperties": {
+                "$comment": "null not allowed since user won't be prompted to populate",
+                "type": [
+                    "string",
+                    "number",
+                    "integer",
+                    "boolean"
+                ]
+            },
+            "examples":[
+                {
+                    "PORT_WIDTH":32,
+                    "START_COUNT":"27'd0"
+                }
+            ]
+        },
+        "interfaces": {
+            "description": "Array of dicts representing interfaces",
+            "type": "array",
+            "items": {
+                "type": "object",
+                "allOf": [
+                    {
+                        "properties": {
+                            "interface_name": {
+                                "description": "The name to give the interface",
+                                "type": "string"
+                            },
+                            "type": {
+                                "description": "The type name of the interface",
+                                "type": "string"
+                            },
+                            "side": {
+                                "description": "The side of the interface",
+                                "type": "string",
+                                "enum": [
+                                    "source",
+                                    "sink",
+                                    "start",
+                                    "end"
+                                ]
+                            },
+                            "multi": {
+                                "description": "List of strings to be substituted for ? in strings used to create the multiple interfaces",
+                                "type": "array",
+                                "items": {
+                                    "type": [
+                                        "string",
+                                        "integer"
+                                    ]
+                                }
+                            },
+                            "multiconnect": {
+                                "description": "Behavior if multiple interfaces connected",
+                                "type": "string",
+                                "enum": [
+                                    "false",
+                                    "shared",
+                                    "interconnect"
+                                ]
+                            },
+                            "interconnect_settings": {
+                                "type": "object",
+                                "description": "Settings for an interconnect",
+                                "properties": {
+                                    "params": {
+                                        "type": "object",
+                                        "description": "All key values will be passed as parameters to the interconnect"
+                                    },
+                                    "pass_clock": {
+                                        "type": "string",
+                                        "description": "clock interface to pass to the interconnect. Use the name assigned to the clock in your vgen file"
+                                    },
+                                    "pass_reset": {
+                                        "type": "string",
+                                        "description": "reset interface to pass to the interconnect. Use the name assigned to the reset in your vgen file"
+                                    }
+                                }
+                            },
+                            "ports": {
+                                "type": "object",
+                                "description": "Contains ports and their definitions",
+                                "additionalProperties": {
+                                    "type": "object",
+                                    "properties": {
+                                        "name": {
+                                            "description": "Name of the input/output wire in the module",
+                                            "type": "string"
+                                        },
+                                        "dir": {
+                                            "description": "Direction of the wire input/output",
+                                            "enum": [
+                                                "input",
+                                                "output"
+                                            ]
+                                        },
+                                        "width": {
+                                            "description": "Size of the port in bits",
+                                            "type": "integer",
+                                            "minimum": 0
+                                        },
+                                        "dynamic_width": {
+                                            "description": "If specified, the port width will be set by the given param. If started with / the exact command will be pasted allowing for specialized python logic to run in the module. Example '/int(self.parameters_[width]/8)",
+                                            "type": "string"
+                                        },
+                                        "unconnected": {
+                                            "description": "Behavior if port isn't connected only applies if input",
+                                            "oneOf": [
+                                                {
+                                                    "description": "Special unconnected port behaviors",
+                                                    "enum": [
+                                                        "tie_high",
+                                                        "tie_low",
+                                                        "forbidden",
+                                                        "nothing"
+                                                    ]
+                                                },
+                                                {
+                                                    "description": "Assign a custom numeric value to a port when it is left unconnected",
+                                                    "type": "number"
+                                                }
+                                            ]
+                                        }
+                                    },
+                                    "required": [
+                                        "name"
+                                    ],
+                                    "$comment": "Don't require direction since it might be placed by the types validator"
+                                }
+                            }
+                        }
+                    },
+                    {
+                        "$ref": "urn:base:special"
+                    }
+                ],
+                "required": [
+                    "interface_name",
+                    "type",
+                    "side",
+                    "ports"
+                ]
+            }
+        }
+    },
+    "required": [
+        "name",
+        "ip_name",
+        "interfaces"
+    ]
+}

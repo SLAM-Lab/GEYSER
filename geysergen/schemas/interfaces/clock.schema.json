@@ -1,0 +1,75 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id" : "urn:interfaces:clock",
+  "title": "Clock Schema",
+  "description": "Validates clock interfaces",
+  "type": "object",
+  "allOf": [
+    {
+      "properties": {
+        "type": {
+          "description": "The interface type",
+          "type": "string",
+          "const": "clock"
+        },
+        "ports": {
+          "type": "object",
+          "description": "Contains ports and their definitions",
+          "patternProperties": {
+            "^clk(_n)?$": {
+              "$ref": "urn:help:w1"
+            }
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "side": {
+            "enum": [
+              "sink",
+              "end"
+            ]
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "ports": {
+            "type": "object",
+            "description": "Contains ports and their definitions",
+            "patternProperties": {
+              "^clk(_n)?$": {
+                "$ref": "urn:help:def_in"
+              }
+            }
+          },
+          "multiconnect": {
+            "description": "Behavior if multiple interfaces connected",
+            "const": "false",
+            "default": "false"
+          }
+        }
+      },
+      "else": {
+        "properties": {
+          "ports": {
+            "type": "object",
+            "description": "Contains ports and their definitions",
+            "patternProperties": {
+              "^clk(_n)?$": {
+                "$ref": "urn:help:def_out"
+              }
+            }
+          },
+          "multiconnect": {
+            "description": "Behavior if multiple interfaces connected",
+            "type": "string",
+            "default": "shared"
+          }
+        }
+      }
+    }
+  ]
+}

@@ -1,0 +1,106 @@
+{
+    "name": "avalon_byte_to_word",
+    "ip_name": "Avalon_Byte_to_Word",
+    "parameters": {
+        "DATA_WIDTH":null,
+        "ADDR_WIDTH":null,
+        "BURSTCOUNT_WIDTH":1
+    },
+    "hidden_parameters":{
+        "SYMBOL_WIDTH":8
+    },
+    "interfaces": [
+        {
+            "interface_name":"clock",
+            "side":"sink",
+            "type":"clock",
+            "ports":{
+                "clk":{
+                    "name":"clk",
+                    "unconnected":"forbidden"
+                }
+            }
+        },
+        {
+            "interface_name": "avalon_in",
+            "side": "sink",
+            "type": "avalon",
+            "ports": {
+                "waitrequest": {
+                    "name": "s0_waitrequest"
+                },
+                "readdatavalid": {
+                    "name": "s0_readdatavalid"
+                },
+                "burstcount": {
+                    "name": "s0_burstcount",
+                    "dynamic_width":"BURSTCOUNT_WIDTH"
+                },
+                "byteenable": {
+                    "name": "s0_byteenable",
+                    "dynamic_width": "/int(self._parameters['DATA_WIDTH']/self._parameters['SYMBOL_WIDTH'])"
+                },
+                "writedata": {
+                    "name": "s0_writedata",
+                    "dynamic_width": "DATA_WIDTH"
+                },
+                "readdata": {
+                    "name": "s0_readdata",
+                    "dynamic_width": "DATA_WIDTH"
+                },
+                "address": {
+                    "name": "s0_address",
+                    "dynamic_width": "ADDR_WIDTH"
+                },
+                "write": {
+                    "name": "s0_write"
+                },
+                "read": {
+                    "name": "s0_read"
+                }
+            }
+        },
+        {
+            "interface_name": "avalon_out",
+            "side": "source",
+            "type": "avalon",
+            "interconnect_settings": {
+                "pass_clock": "clock"
+            },
+            "ports": {
+                "waitrequest": {
+                    "name": "m0_waitrequest"
+                },
+                "readdatavalid": {
+                    "name": "m0_readdatavalid"
+                },
+                "burstcount": {
+                    "name": "m0_burstcount",
+                    "dynamic_width":"BURSTCOUNT_WIDTH"
+                },
+                "byteenable": {
+                    "name": "m0_byteenable",
+                    "dynamic_width": "/int(self._parameters['DATA_WIDTH']/self._parameters['SYMBOL_WIDTH'])"
+                },
+                "writedata": {
+                    "name": "m0_writedata",      
+                    "dynamic_width": "DATA_WIDTH"
+                },
+                "readdata": {
+                    "name": "m0_readdata",
+                    "dynamic_width": "DATA_WIDTH"
+                },
+                "address": {
+                    "name": "m0_address",
+                    "dynamic_width": "/self._parameters['ADDR_WIDTH']-int(math.log2(self._parameters['DATA_WIDTH']/8))"
+                },
+                "write": {
+                    "name": "m0_write"
+                },
+                "read": {
+                    "name": "m0_read"
+                }
+            }
+        }
+    ]
+}

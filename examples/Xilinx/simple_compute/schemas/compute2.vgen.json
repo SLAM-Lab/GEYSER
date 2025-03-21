@@ -1,0 +1,236 @@
+{
+    "name": "compute2",
+    "ip_name": "compute2_0",
+    "interfaces": [
+        {
+            "interface_name": "ap_clk",
+            "type": "clock",
+            "side": "sink",
+            "interconnect_settings": {},
+            "ports": {
+                "clk": {
+                    "name": "ap_clk",
+                    "dir": "input",
+                    "width": 1
+                }
+            }
+        },
+        {
+            "interface_name": "ap_rst",
+            "type": "reset",
+            "side": "sink",
+            "interconnect_settings": {},
+            "ports": {
+                "rst": {
+                    "name": "ap_rst",
+                    "dir": "input",
+                    "width": 1
+                }
+            }
+        },
+        {
+            "interface_name": "ap_ctrl",
+            "type": "acc_handshake",
+            "side": "sink",
+            "interconnect_settings": {},
+            "ports": {
+                "start": {
+                    "name": "ap_start",
+                    "dir": "input",
+                    "width": 1
+                },
+                "done": {
+                    "name": "ap_done",
+                    "dir": "output",
+                    "width": 1
+                },
+                "idle": {
+                    "name": "ap_idle",
+                    "dir": "output",
+                    "width": 1
+                },
+                "ready": {
+                    "name": "ap_ready",
+                    "dir": "output",
+                    "width": 1
+                }
+            }
+        },
+        {
+            "interface_name": "port0_porta",
+            "type": "bram",
+            "side": "source",
+            "multiconnect":"interconnect",
+            "interconnect_settings": {},
+            "ports": {
+                "clk": {
+                    "name": "port0_Clk_A",
+                    "dir": "output",
+                    "width": 1
+                },
+                "rst": {
+                    "name": "port0_Rst_A",
+                    "dir": "output",
+                    "width": 1
+                },
+                "en": {
+                    "name": "port0_EN_A",
+                    "dir": "output",
+                    "width": 1
+                },
+                "we": {
+                    "name": "port0_WEN_A",
+                    "dir": "output",
+                    "width": 4
+                },
+                "addr": {
+                    "name": "port0_Addr_A",
+                    "dir": "output",
+                    "width": 32
+                },
+                "din": {
+                    "name": "port0_Din_A",
+                    "dir": "output",
+                    "width": 32
+                },
+                "dout": {
+                    "name": "port0_Dout_A",
+                    "dir": "input",
+                    "width": 32
+                }
+            }
+        },
+        {
+            "interface_name": "port0_portb",
+            "type": "bram",
+            "side": "source",
+            "multiconnect":"interconnect",
+            "interconnect_settings": {},
+            "ports": {
+                "clk": {
+                    "name": "port0_Clk_B",
+                    "dir": "output",
+                    "width": 1
+                },
+                "rst": {
+                    "name": "port0_Rst_B",
+                    "dir": "output",
+                    "width": 1
+                },
+                "en": {
+                    "name": "port0_EN_B",
+                    "dir": "output",
+                    "width": 1
+                },
+                "we": {
+                    "name": "port0_WEN_B",
+                    "dir": "output",
+                    "width": 4
+                },
+                "addr": {
+                    "name": "port0_Addr_B",
+                    "dir": "output",
+                    "width": 32
+                },
+                "din": {
+                    "name": "port0_Din_B",
+                    "dir": "output",
+                    "width": 32
+                },
+                "dout": {
+                    "name": "port0_Dout_B",
+                    "dir": "input",
+                    "width": 32
+                }
+            }
+        },
+        {
+            "interface_name": "port1_porta",
+            "type": "bram",
+            "side": "source",
+            "multiconnect":"interconnect",
+            "interconnect_settings": {},
+            "ports": {
+                "clk": {
+                    "name": "port1_Clk_A",
+                    "dir": "output",
+                    "width": 1
+                },
+                "rst": {
+                    "name": "port1_Rst_A",
+                    "dir": "output",
+                    "width": 1
+                },
+                "en": {
+                    "name": "port1_EN_A",
+                    "dir": "output",
+                    "width": 1
+                },
+                "we": {
+                    "name": "port1_WEN_A",
+                    "dir": "output",
+                    "width": 4
+                },
+                "addr": {
+                    "name": "port1_Addr_A",
+                    "dir": "output",
+                    "width": 32
+                },
+                "din": {
+                    "name": "port1_Din_A",
+                    "dir": "output",
+                    "width": 32
+                },
+                "dout": {
+                    "name": "port1_Dout_A",
+                    "dir": "input",
+                    "width": 32
+                }
+            }
+        },
+        {
+            "interface_name": "port2_porta",
+            "type": "bram",
+            "side": "source",
+            "multiconnect":"interconnect",
+            "interconnect_settings": {},
+            "ports": {
+                "clk": {
+                    "name": "port2_Clk_A",
+                    "dir": "output",
+                    "width": 1
+                },
+                "rst": {
+                    "name": "port2_Rst_A",
+                    "dir": "output",
+                    "width": 1
+                },
+                "en": {
+                    "name": "port2_EN_A",
+                    "dir": "output",
+                    "width": 1
+                },
+                "we": {
+                    "name": "port2_WEN_A",
+                    "dir": "output",
+                    "width": 4
+                },
+                "addr": {
+                    "name": "port2_Addr_A",
+                    "dir": "output",
+                    "width": 32
+                },
+                "din": {
+                    "name": "port2_Din_A",
+                    "dir": "output",
+                    "width": 32
+                },
+                "dout": {
+                    "name": "port2_Dout_A",
+                    "dir": "input",
+                    "width": 32
+                }
+            }
+        }
+    ]
+}

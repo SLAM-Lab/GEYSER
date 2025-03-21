@@ -1,0 +1,155 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id" : "urn:interfaces:avalon",
+  "title": "Avalon Schema",
+  "description": "Validates avalon interfaces",
+  "type": "object",
+  "allOf": [
+    {
+      "properties": {
+        "type": {
+          "description": "The interface type",
+          "type": "string",
+          "const": "avalon"
+        },
+        "multiconnect": {
+          "description": "Behavior if multiple interfaces connected",
+          "type": "string",
+          "default": "interconnect"
+        },
+        "ports": {
+          "type": "object",
+          "description": "Contains ports and their definitions",
+          "patternProperties": {
+            "^read(_n)?$": {
+              "$ref": "urn:help:w1"
+            },
+            "^write(_n)?$": {
+              "$ref": "urn:help:w1"
+            },
+            "^waitrequest(_n)?$": {
+              "$ref": "urn:help:w1"
+            },
+            "^readdatavalid(_n)?$": {
+              "$ref": "urn:help:w1"
+            },
+            "^writeresponsevalid(_n)?$": {
+              "$ref": "urn:help:w1"
+            }
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "side": {
+            "enum": [
+              "sink",
+              "end"
+            ]
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "ports": {
+            "type": "object",
+            "description": "Contains ports and their definitions",
+            "patternProperties": {
+              "^waitrequest(_n)?$": {
+                "$ref": "urn:help:def_out"
+              },
+              "^readdatavalid(_n)?$": {
+                "$ref": "urn:help:def_out"
+              },
+              "^writeresponsevalid(_n)?$": {
+                "$ref": "urn:help:def_out"
+              }
+            },
+            "properties": {
+              "byteenable": {
+                "$ref": "urn:help:def_in_high"
+              },
+              "byteenable_n": {
+                "$ref": "urn:help:def_in_low"
+              },
+              "read": {
+                "$ref": "urn:help:def_in_low"
+              },
+              "read_n": {
+                "$ref": "urn:help:def_in_high"
+              },
+              "write": {
+                "$ref": "urn:help:def_in_low"
+              },
+              "write_n": {
+                "$ref": "urn:help:def_in_high"
+              },
+              "address": {
+                "$ref": "urn:help:def_in"
+              },
+              "readdata": {
+                "$ref": "urn:help:def_out"
+              },
+              "writedata": {
+                "$ref": "urn:help:def_in"
+              },
+              "burstcount": {
+                "$ref": "urn:help:def_in"
+              },
+              "beginbursttransfer": {
+                "$ref": "urn:help:def_in"
+              }
+            }
+          }
+        }
+      },
+      "else": {
+        "properties": {
+          "ports": {
+            "type": "object",
+            "description": "Contains ports and their definitions",
+            "patternProperties": {
+              "^byteenable(_n)?$": {
+                "$ref": "urn:help:def_out"
+              },
+              "^read(_n)?$": {
+                "$ref": "urn:help:def_out"
+              },
+              "^write(_n)?$": {
+                "$ref": "urn:help:def_out"
+              },
+              "^waitrequest(_n)?$": {
+                "$ref": "urn:help:def_in"
+              },
+              "^readdatavalid(_n)?$": {
+                "$ref": "urn:help:def_in"
+              },
+              "^writeresponsevalid(_n)?$": {
+                "$ref": "urn:help:def_in"
+              }
+            },
+            "properties": {
+              "address": {
+                "$ref": "urn:help:def_out"
+              },
+              "readdata": {
+                "$ref": "urn:help:def_in"
+              },
+              "writedata": {
+                "$ref": "urn:help:def_out"
+              },
+              "burstcount": {
+                "$ref": "urn:help:def_out"
+              },
+              "beginbursttransfer": {
+                "$ref": "urn:help:def_out"
+              }
+            }
+          }
+        }
+      }
+    }
+  ]
+}

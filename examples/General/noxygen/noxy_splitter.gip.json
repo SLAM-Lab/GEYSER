@@ -1,0 +1,53 @@
+{
+    "name": "noxy_splitter",
+    "ip_name": "noxy_splitter",
+    "parameters": {
+        "INPUTS":null,
+        "DATA_WIDTH":null
+    },
+    "interfaces": [
+        {
+            "interface_name": "data_in",
+            "type": "noxybus",
+            "side": "sink",
+            "ports": {
+                "valid": {
+                    "name": "valid_in_bus",
+                    "dir": "input",
+                    "dynamic_width": "INPUTS"
+                },
+                "ready": {
+                    "name": "ready_in_bus",
+                    "dir": "output",
+                    "dynamic_width": "INPUTS"
+                }
+                ,"data": {
+                    "name": "data_in_bus",
+                    "dir": "input",
+                    "dynamic_width": "/self._parameters['INPUTS']*self._parameters['DATA_WIDTH']"
+                }
+            }
+        },
+        {
+            "interface_name": "data_out?",
+            "multi": [0,1,2,3,4,5],
+            "type": "noxybus",
+            "side": "source",
+            "ports": {
+                "valid": {
+                    "name": "valid_out_bus_?",
+                    "dir": "output"
+                },
+                "ready": {
+                    "name": "ready_out_bus_?",
+                    "dir": "input"
+                }
+                ,"data": {
+                    "name": "data_out_bus_?",
+                    "dir": "output",
+                    "dynamic_width": "DATA_WIDTH"
+                }
+            }
+        }
+    ]
+}

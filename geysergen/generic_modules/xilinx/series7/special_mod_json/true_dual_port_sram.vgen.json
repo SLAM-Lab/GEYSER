@@ -1,0 +1,45 @@
+{
+    "name": "true_dual_port_sram",
+    "ip_name": "true_dual_port_sram",
+    "parameters":{
+        "MEM_BYTES":null,
+        "DATA_WIDTH":null,
+        "BYTE_ADDRESSING":0,
+        "LATENCY":2
+    },
+    "interfaces": [
+        {
+            "interface_name": "bram_port_?",
+            "multi":["a","b"],
+            "side": "sink",
+            "type": "bram",
+            "ports": {
+                "din": {
+                    "name": "din?",
+                    "dynamic_width": "DATA_WIDTH"
+                },
+                "dout": {
+                    "name": "dout?",
+                    "dynamic_width": "DATA_WIDTH"
+                },
+                "en": {
+                    "name": "en?"
+                },
+                "we": {
+                    "name": "we?",
+                    "dynamic_width": "/int(self._parameters['DATA_WIDTH']/8)"
+                },
+                "addr": {
+                    "name": "addr?",
+                    "dynamic_width": "/int(math.log2(self._parameters['MEM_BYTES'])) if self._parameters['BYTE_ADDRESSING'] else int(math.log2(self._parameters['MEM_BYTES']/(self._parameters['DATA_WIDTH']/8))) "
+                },
+                "clk":{
+                    "name":"clk?"
+                },
+                "rst":{
+                    "name":"reset?"
+                }
+            }
+        }
+    ]
+}
