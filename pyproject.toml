@@ -4,7 +4,7 @@ build-backend = "hatchling.build"
 
 [project]
 name = "geysergen"
-version = "0.0.1"
+version = "0.0.2"
 authors = [
   { name="Austin James", email="ajamesut@utexas.edu" },
 ]
@@ -20,8 +20,9 @@ classifiers = [
 ]
 dependencies = ["jsonschema","lxml"]
 [project.urls]
-Homepage = "https://gitlab.com/AJames755/geyser"
-Issues = "https://gitlab.com/AJames755/geyser/-/issues"
+Homepage = "https://github.com/SLAM-Lab/GEYSER"
+Codebase = "https://github.com/SLAM-Lab/GEYSER"
+Issues = "https://github.com/SLAM-Lab/GEYSER/issues"
 
 [project.scripts]
 module_gen = "geysergen.scripts.module_gen:main"
